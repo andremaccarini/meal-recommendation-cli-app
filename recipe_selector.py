@@ -1,3 +1,6 @@
+import tkinter as tk
+from tkinter import ttk, scrolledtext
+
 class Receita: 
     """Principal classe do programa"""
 
@@ -35,6 +38,47 @@ class LivroDeReceitas:
             return False 
         
 #ADICIONA LÓGICA PARA INTERAÇÃO COM USUÁRIO
+
+class RecipeApp:
+    def __init__(self, master, livro):
+        self.master = master
+        self.livro = livro  # Instância do Livro de Receitas
+        master.title("Selecionador de Receitas")
+
+        # Configurações da janela
+        master.configure(bg='lightblue')
+
+        # Labels
+        self.label = ttk.Label(master, text="Escolha o momento da refeição:")
+        self.label.pack(pady=10)
+
+        # Botões para escolher o tipo de refeição
+        self.cafe_button = ttk.Button(master, text="Café", command=lambda: self.select_meal('café'))
+        self.cafe_button.pack()
+
+        self.almoco_button = ttk.Button(master, text="Almoço", command=lambda: self.select_meal('almoço'))
+        self.almoco_button.pack()
+
+        self.lanche_button = ttk.Button(master, text="Lanche", command=lambda: self.select_meal('lanche'))
+        self.lanche_button.pack()
+
+        self.janta_button = ttk.Button(master, text="Janta", command=lambda: self.select_meal('janta'))
+        self.janta_button.pack()
+
+        # Área de texto para exibir as receitas
+        self.text_area = scrolledtext.ScrolledText(master, width=40, height=10)
+        self.text_area.pack(pady=10)
+
+    def select_meal(self, meal):
+        if meal in self.livro.receitas:
+            self.text_area.delete('1.0', tk.END)  # Limpa a área de texto antes de adicionar novo conteúdo
+            for receita in self.livro.receitas[meal]:
+                self.text_area.insert(tk.END, f"{receita.nome}\nIngredientes:\n")
+                for ingrediente, quantidade in receita.ingredientes.items():
+                    self.text_area.insert(tk.END, f" - {ingrediente}: {quantidade}g\n")
+                self.text_area.insert(tk.END, f"\nModo de preparo:\n{receita.preparo}\n\n")
+        else:
+            self.text_area.insert(tk.END, "Momento do dia inválido.\n")
 
 def popular_livro(livro):
     # Receitas de café
@@ -103,9 +147,12 @@ def popular_livro(livro):
     return livro
 
 def main(): 
-    livro = LivroDeReceitas() #Instancia o livro de receitas 
-    livro = popular_livro(livro)
+    #livro = LivroDeReceitas() #Instancia o livro de receitas 
+    livro = popular_livro(LivroDeReceitas())
     #Aqui seria adicionado as receitas ao livro usando livro.adicionar_receita()
+    root = tk.Tk()
+    app = RecipeApp(root, livro)
+    root.mainloop()
 
     print("Bem-vindo ao Selecionador de Receita!")
     momento = input("Para qual momento do dia você deseja uma receita? (café, almoço, lanche, janta)")
