@@ -66,7 +66,7 @@ class RecipeApp:
         self.janta_button.pack()
 
         # Área de texto para exibir as receitas
-        self.text_area = scrolledtext.ScrolledText(master, width=40, height=10)
+        self.text_area = scrolledtext.ScrolledText(master, width=400, height=100)
         self.text_area.pack(pady=10)
 
     def select_meal(self, meal):
