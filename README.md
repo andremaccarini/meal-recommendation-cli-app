@@ -27,7 +27,7 @@ git clone https://github.com/andre-maccarini/meal-recommendation-cli-app.git
 cd meal-recommendation-cli-app
 
 # Run the app
-python main.py
+python recipe_selector.py
 ```
 
 ## 🎮 Preview
